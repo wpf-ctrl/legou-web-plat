@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import { requestLogin } from '../api/api';
+  // import { requestLogin } from '../api/api';
   //import NProgress from 'nprogress'
   export default {
     data() {
@@ -47,11 +47,11 @@
         var _this = this;
         this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
-            //_this.$router.replace('/table');
-            this.logining = true;
-            //NProgress.start();
-            var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
-            requestLogin(loginParams).then(data => {
+              //_this.$router.replace('/table');
+              this.logining = true;
+              //NProgress.start();
+              var loginParams = {username: this.ruleForm2.account, password: this.ruleForm2.checkPass};
+              /* requestLogin(loginParams).then(data => {
               this.logining = false;
               //NProgress.done();
               let { msg, code, user } = data;
@@ -64,7 +64,23 @@
                 sessionStorage.setItem('user', JSON.stringify(user));
                 this.$router.push({ path: '/table' });
               }
-            });
+            });*/
+              this.$http.post('/plat/login', loginParams)
+                  .then(res=>{
+                      this.logining = false;
+                      console.log(res)
+                      //NProgress.done();
+                      let {message, errorCode, restObj,success} = res.data;
+                      if (!success) {
+                          this.$message({
+                              message: message,
+                              type: 'error'
+                          });
+                      } else {
+                          sessionStorage.setItem('user', JSON.stringify(restObj));
+                          this.$router.push({ path:'/echarts'});
+                      }
+                  })
           } else {
             console.log('error submit!!');
             return false;

@@ -10,13 +10,23 @@ import Vuex from 'vuex'
 //import NProgress from 'nprogress'
 //import 'nprogress/nprogress.css'
 import routes from './routes'
-import Mock from './mock'
-Mock.bootstrap();
+// import Mock from './mock'
+//禁用mock mock不会拦截请求
+// Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
+import  axios from 'axios'
+
+// 引用axios，并设置基础URL为后端服务api地址
+axios.defaults.baseURL = 'http://localhost:1299/services'  //对应后端网关统一地址 基本的url 后端的所有请求都会拼接这个前缀
+// 将API方法绑定到全局  /plat/login
+Vue.prototype.$http = axios
+Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+
+
 
 //NProgress.configure({ showSpinner: false });
 //路由镜像
